@@ -1,0 +1,19 @@
+{
+"configs" : [
+  {
+"server" : "153.92.46.125",
+"server_port" : 8388,
+"password" : "bestwing.top",
+"method" : "aes-256-cfb",
+"remarks" : ""}
+
+],
+"strategy" : null,
+"index" : 0,
+"global" : true,
+"enabled" : true,
+"shareOverLan" : false,
+"isDefault" : false,
+"localPort" : 1080,
+"pacUrl" : null,
+"useOnlinePac" : false}
