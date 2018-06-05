@@ -6,7 +6,7 @@
 
 ## 密码学工具
 
-[toolkit-for-crypto]()
+[https://github.com/WinMin/Swings/tree/master/toolkit-for-crypto](https://github.com/WinMin/Swings/tree/master/toolkit-for-crypto)
 
 
 
@@ -17,6 +17,9 @@
 基于pwntools 的 CTF Pwn tool frame
 
 
+## Surge 配置
+
+我的Surge配置文件
 
 ## long go
 
