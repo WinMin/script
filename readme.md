@@ -21,6 +21,12 @@
 
 我的Surge配置文件
 
+
+
+## ida_bash
+
+从终端启用ida
+
 ## long go
 
 没啥软用
