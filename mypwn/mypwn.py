@@ -7,6 +7,25 @@ from optparse import OptionParser
 context.log_level = 'debug'
 context.terminal = ["tmux","splitw","-h"]
 
+
+ru = lambda x : io.recvuntil(x)
+sn = lambda x : io.send(x)
+rl = lambda  : io.recvline()
+sl = lambda x : io.sendline(x) 
+rv = lambda x : io.recv(x)
+sa = lambda a,b : io.sendafter(a,b)
+sla = lambda a,b : io.sendlineafter(a,b)
+
+def lg(s,addr):
+    print('\033[1;31;40m%20s-->0x%x\033[0m'%(s,addr))
+
+
+def raddr(a=6):
+    if(a==6):
+        return u64(rv(a).ljust(8,'\x00'))
+    else:
+        return u64(rl().strip('\n').ljust(8,'\x00'))
+
 def get_base_addr(pid):
     pid = int(pid)
     vmmap = os.popen("pmap %d | awk '{print $1}'"%(pid)).read()
@@ -67,41 +86,4 @@ def init_pwn(BIN_FILE = '',LIBC_FILE='',remote_detail=(),is_env = True):
     return io,elf,libc
 
 
-def ru(a):
-    global io
-    return io.recvuntil(a)
 
-def sn(a):
-    global io
-    io.send(a)
-
-def rl():
-    global io
-    return io.recvline()
-
-def sl(a):
-    global io
-
-    io.sendline(a)
-
-def rv(a):
-    global io
-    return io.recv(a)
-
-def raddr(a=0):
-    if a:
-        return u64(rv(a).ljust(8,'\x00'))
-    else:
-        return u64(rl().strip('\n').ljust(8,'\x00'))
-
-def lg(s,addr):
-
-    print('\033[1;31;40m%20s-->0x%x\033[0m'%(s,addr))
-
-def sa(a,b):
-    global io
-    io.sendafter(a,b)
-
-def sla(a,b):
-    global io
-    io.sendlineafter(a,b)
