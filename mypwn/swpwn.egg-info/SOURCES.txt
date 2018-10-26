@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+swpwn/__init__.py
+swpwn/__version__.py
+swpwn/swpwn.py
+swpwn.egg-info/PKG-INFO
+swpwn.egg-info/SOURCES.txt
+swpwn.egg-info/dependency_links.txt
+swpwn.egg-info/top_level.txt
