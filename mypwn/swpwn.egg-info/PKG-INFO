@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 1.2
 Name: swpwn
 Version: 1.0.0
 Summary: My short description for my project.
@@ -6,6 +6,7 @@ Home-page: https://github.com/WinMin/some-gadget/tree/master/mypwn
 Author: Swing
 Author-email: bestswngs@gmail.com
 License: MIT
+Description-Content-Type: text/markdown
 Description: 
         📦 setup.py (for humans)
         =======================
@@ -72,4 +73,3 @@ Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: Implementation :: CPython
 Classifier: Programming Language :: Python :: Implementation :: PyPy
 Requires-Python: >=3.6.0
-Description-Content-Type: text/markdown

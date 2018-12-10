@@ -6,13 +6,9 @@ import os
 from optparse import OptionParser
 
 
-ru = lambda x : io.recvuntil(x)
-sn = lambda x : io.send(x)
-rl = lambda : io.recvline()
-sl = lambda x : io.sendline(x)
-rv = lambda x : io.recv(x)
-sa = lambda a,b : io.sendafter(a,b)
-sla = lambda a,b : io.sendlineafter(a,b)
+
+
+
 
 def lg(s,addr):
     """
@@ -83,6 +79,9 @@ def init_parser():
     elif options.remote:
         options.local = False
         options.remote = True
+    else:
+        options.local = True
+        options.remote =  False
     return options
 
 
@@ -96,6 +95,7 @@ def init_pwn(BIN_FILE = '',LIBC_FILE='',remote_detail=('127.0.0.1',23333),is_env
     
     return io,elf,libc
     """
+    global io
     elf = ELF(BIN_FILE)
     if LIBC_FILE:
         libc = ELF(LIBC_FILE)
@@ -116,3 +116,11 @@ def init_pwn(BIN_FILE = '',LIBC_FILE='',remote_detail=('127.0.0.1',23333),is_env
 
 
 
+
+ru = lambda x : io.recvuntil(x)
+sn = lambda x : io.send(x)
+rl = lambda : io.recvline()
+sl = lambda x : io.sendline(x)
+rv = lambda x : io.recv(x)
+sa = lambda a,b : io.sendafter(a,b)
+sla = lambda a,b : io.sendlineafter(a,b)

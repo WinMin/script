@@ -1,56 +1,133 @@
-📦 setup.py (for humans)
-=======================
+## Outline
 
-This repo exists to provide [an example setup.py] file, that can be used
-to bootstrap your next Python project. It includes some advanced
-patterns and best practices for `setup.py`, as well as some
-commented–out nice–to–haves.
 
-For example, this `setup.py` provides a `$ python setup.py upload`
-command, which creates a *universal wheel* (and *sdist*) and uploads
-your package to [PyPi] using [Twine], without the need for an annoying
-`setup.cfg` file. It also creates/uploads a new git tag, automatically.
 
-In short, `setup.py` files can be daunting to approach, when first
-starting out — even Guido has been heard saying, "everyone cargo cults
-thems". It's true — so, I want this repo to be the best place to
-copy–paste from :)
+### about swpwn
 
-**If you're interested in financially supporting Kenneth Reitz open source, consider [visiting this link](https://cash.me/$KennethReitz). Your support helps tremendously with sustainability of motivation, as Open Source is no longer part of my day job.**
 
-[Check out the example!][an example setup.py]
 
-![image]
+wrapper for pwtools， Debug and exploit for CTF .
 
-To Do
------
+A pwn framework(based on `pwntools`) aiming at eliminating dull work while scripting and debugging.
 
--   Tests via `$ setup.py test` (if it's concise).
 
-Pull requests are encouraged!
 
-More Resources
---------------
 
--   [What is setup.py?] on Stack Overflow
--   [The Hitchhiker's Guide to Packaging]
--   [Cookiecutter template for a Python package]
 
-License
--------
+### Install 
 
-This is free and unencumbered software released into the public domain.
+`python setup.py install` 
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
+or copy the **swpwn.py** to your directory
 
-✨🍰✨
+### usage
 
-  [an example setup.py]: https://github.com/kennethreitz/setup.py/blob/master/setup.py
-  [PyPi]: https://docs.python.org/3/distutils/packageindex.html
-  [Twine]: https://pypi.python.org/pypi/twine
-  [image]: https://farm1.staticflickr.com/628/33173824932_58add34581_k_d.jpg
-  [What is setup.py?]: https://stackoverflow.com/questions/1471994/what-is-setup-py
-  [The Hitchhiker's Guide to Packaging]: https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/creation.html
-  [Cookiecutter template for a Python package]: https://github.com/audreyr/cookiecutter-pypackage
+#### 0x01 init pwn
+
+```python
+from swpwn import *
+
+io,elf,libc = init_pwn(BIN_FILE = 'bin',LIBC_FILE='libc.so.6',remote_detail=('127.0.0.1',23333),is_env = False)
+```
+
+
+
+fecture:
+
+```python
+def init_pwn(BIN_FILE = '',LIBC_FILE='',remote_detail=('127.0.0.1',23333),is_env = False):
+    """
+    init pwn infomation
+    usage: binary ,libc.so ,remote ip and port and  if use libc to debug
+    
+    return io,elf,libc
+    """
+    global io
+    elf = ELF(BIN_FILE)
+    
+#    if LIBC_FILE:
+#        libc = ELF(LIBC_FILE)
+#    else:
+#        libc = elf.libc
+    # io = process(binary,env = {'LD_PRELOAD': './libc.so.6'})
+    env = {'LD_PRELOAD':os.getcwd() + '/' +  LIBC_FILE}
+    if opt.local:
+        if is_env:
+            io = process(BIN_FILE,env=env)
+            libc = ELF(LIBC_FILE)
+        else:
+            io = process(BIN_FILE)
+            libc = elf.libc
+    else:
+        io = remote(remote_detail[0],remote_detail[1],timeout=5)
+        libc = ELF(LIBC_FILE)
+
+    return io,elf,libc
+```
+
+
+
+
+
+
+
+#### 0x02 init debug
+
+call init_debug(io,breakpoint=['0x1234','0xdeadbeef'],pie = False)
+
+```python
+def init_debug(io,breakpint=[],pie = False):
+    """
+    init debug
+    usage: io, breakpoint ,pie if open
+    return breakpoint and get gdb attach PID
+    """
+    if pie:
+        base_addr = get_base_addr(proc.pidof(io)[0])
+        bp = ''.join(['b *0x%x\n'%(b+base_addr) for b in breakpint])
+    else:
+        bp = ''.join(['b *0x%x\n'% b for b in breakpint])
+
+    gdb.attach(proc.pidof(io)[0],bp)
+    return bp
+```
+
+
+
+if your binary open pie, you can set pie is true ,than the program will auto find the code base by **get_base_addrt** function.
+
+#### 0x03  quick script
+
+
+
+```python
+ru = lambda x : io.recvuntil(x)
+sn = lambda x : io.send(x)
+rl = lambda : io.recvline()
+sl = lambda x : io.sendline(x)
+rv = lambda x : io.recv(x)
+sa = lambda a,b : io.sendafter(a,b)
+sla = lambda a,b : io.sendlineafter(a,b)
+```
+
+
+
+we can use the simple word to call IO Function. 
+
+
+
+### TODO
+
+quick find magic function add, like main_arean,malloc_hook...
+
+- [ ] malloc_hook
+
+- [ ] Free_hook
+
+- [ ] main_arean
+
+- [ ] system
+
+- [ ] onegadget
+
+  .....
