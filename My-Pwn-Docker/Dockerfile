@@ -1,6 +1,4 @@
-FROM ubuntu:16.04
-
-
+FROM ubuntu:18.04
 
 # Apt packages
 
@@ -51,9 +49,9 @@ RUN cd ~/ && \
     cp ~/Pwngdb/.gdbinit ~/
 
 
-
-
 ENV LANG C.UTF-8
+
+COPY ./notiterm.py /usr/local/bin/notiterm
 
 VOLUME ["/pwn"]
 WORKDIR /pwn
